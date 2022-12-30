@@ -1,0 +1,19 @@
+buffs:
+  #效果ID
+  example:
+    remove:
+      #[lore] [add/remove] [LORE]...
+      # remove模式为检测startWith
+      - "[lore] add &f已移除宝石 example"
+    install:
+      - "[lore] add &f已添加宝石 example"
+    tick:
+      - "[lore] add &f处理效果 example"
+    listener:
+      - "org.bukkit.event.entity.EntityDamageByEntityEvent||[lore] add &f攻击实体"
+    enable-remove: true
+    gem: ""
+workspace: WORKBENCH
+whitelist:
+  - "DIAMOND_SWORD"
+  - "DIAMOND_AXE"

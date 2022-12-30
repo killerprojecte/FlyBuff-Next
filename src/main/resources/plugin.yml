@@ -1,0 +1,16 @@
+name: FlyBuff
+version: '${version}'
+main: org.fastmcmirror.flybuff.FlyBuff
+api-version: 1.13
+authors: [ FlyProject ]
+description: A Minecraft Gem Buff System (Successor of FlyBuff 1.x)
+commands:
+  flybuff:
+    description: Main Command
+    permission: flybuff.use
+    aliases:
+      - buff
+permissions:
+  flybuff.use:
+    default: true
+

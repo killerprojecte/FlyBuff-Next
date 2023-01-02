@@ -1,10 +1,11 @@
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'maven-publish'
 }
 
 group = 'org.fastmcmirror'
-version = '2.0.0-SNAPSHOT'
+version = '2.0.0-SNAPSHOT-' + getID()
 
 repositories {
     mavenCentral()
@@ -27,10 +28,13 @@ repositories {
 }
 
 dependencies {
+    //implementation 'io.github.classgraph:classgraph:4.8.153'
+    //implementation 'org.burningwave:core:12.62.4'
     compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
     implementation 'de.tr7zw:item-nbt-api:2.11.1'
     implementation 'org.fastmcmirror:yaml:1.3.0'
     implementation 'org.reflections:reflections:0.10.2'
+    //compileOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.19.0'
 }
 
 def targetJavaVersion = 8
@@ -61,4 +65,40 @@ processResources {
 
 shadowJar {
     relocate("de.tr7zw.changeme.nbtapi", "org.fastmcmirror.flybuff.libs.nbtapi")
+    relocate("org.fastmcmirror.yaml", "org.fastmcmirror.flybuff.libs.configuration")
+    relocate("org.yaml.snakeyaml", "org.fastmcmirror.flybuff.libs.snakeyaml")
+    relocate("org.reflections", "org.fastmcmirror.flybuff.libs.reflections")
+    archiveClassifier = ""
+}
+
+def String getID() {
+    Process process = Runtime.getRuntime().exec("git rev-parse --short HEAD")
+    BufferedReader reader = new BufferedReader(new InputStreamReader(process.inputStream))
+    String cid = reader.readLine()
+    if (cid == null) {
+        println("Failed get commit id")
+        System.exit(0)
+    }
+    println("Commit ID: " + cid)
+    return cid;
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId "org.fastmcmirror"
+            artifactId "flybuff-next"
+            version = this.version
+            artifact shadowJar
+        }
+    }
+    repositories {
+        maven {
+            url = "https://repo.fastmcmirror.org/content/repositories/releases/"
+            credentials {
+                username System.getenv("USERNAME")
+                password System.getenv("PASSWORD")
+            }
+        }
+    }
 }

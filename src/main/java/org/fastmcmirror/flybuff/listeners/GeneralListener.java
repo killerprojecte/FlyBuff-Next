@@ -3,7 +3,6 @@ package org.fastmcmirror.flybuff.listeners;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityEvent;
@@ -20,7 +19,7 @@ public class GeneralListener implements Listener {
     private static void handle(ItemStack item, Event event, Consumer<ItemStack> consumer) {
         if (!FlyBuffAPI.hasInstalledBuff(item)) return;
         for (String buff : FlyBuffAPI.getAllInstalledBuff(item)) {
-            for (String line : FlyBuff.instance.getConfig().getStringList("buffs." + buff + ".listener")) {
+            for (String line : FlyBuff.instance.getConfiguration().getStringList("buffs." + buff + ".listener")) {
                 String[] args = line.split("\\|\\|");
                 String listener_name = args[0];
                 if (event.getClass().getName().equals(listener_name)) {
@@ -43,20 +42,20 @@ public class GeneralListener implements Listener {
             if (entityEvent.getEntity() instanceof LivingEntity) {
                 LivingEntity entity = (LivingEntity) entityEvent.getEntity();
                 ItemStack item = entity.getEquipment().getItemInMainHand();
-                if (entityEvent instanceof EntityDamageByEntityEvent){
+                if (entityEvent instanceof EntityDamageByEntityEvent) {
                     EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) entityEvent;
-                    if (entityDamageByEntityEvent.getDamager() instanceof LivingEntity){
+                    if (entityDamageByEntityEvent.getDamager() instanceof LivingEntity) {
                         LivingEntity damager = (LivingEntity) entityDamageByEntityEvent.getDamager();
                         item = damager.getEquipment().getItemInMainHand();
                     }
                 }
-                if (item==null || item.getType().equals(Material.AIR) || item.getAmount()<1) return;
+                if (item == null || item.getType().equals(Material.AIR) || item.getAmount() < 1) return;
                 handle(item, event, itemStack -> entity.getEquipment().setItemInMainHand(itemStack));
             }
         } else if (event instanceof PlayerEvent) {
             PlayerEvent playerEvent = (PlayerEvent) event;
             ItemStack item = playerEvent.getPlayer().getInventory().getItemInMainHand();
-            if (item==null || item.getType().equals(Material.AIR) || item.getAmount()<1) return;
+            if (item == null || item.getType().equals(Material.AIR) || item.getAmount() < 1) return;
             handle(item, event, itemStack -> playerEvent.getPlayer().getInventory().setItemInMainHand(itemStack));
         }
     }

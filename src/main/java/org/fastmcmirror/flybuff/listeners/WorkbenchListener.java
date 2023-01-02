@@ -25,10 +25,10 @@ public class WorkbenchListener implements Listener {
         if (event.getClick().equals(ClickType.LEFT)
                 && event.getClickedInventory() != null &&
                 event.getClickedInventory().getType()
-                        .equals(InventoryType.valueOf(FlyBuff.instance.getConfig().getString("workspace")))
+                        .equals(InventoryType.valueOf(FlyBuff.instance.getConfiguration().getString("workspace")))
                 && gem != null && !gem.getType().equals(Material.AIR) && event.getCurrentItem() != null
                 && !event.getCurrentItem().getType().equals(Material.AIR)) {
-            if (!FlyBuff.instance.getConfig().getStringList("whitelist").stream().map(String::toUpperCase).collect(Collectors.toList())
+            if (!FlyBuff.instance.getConfiguration().getStringList("whitelist").stream().map(String::toUpperCase).collect(Collectors.toList())
                     .contains(event.getCurrentItem().getType().toString())) {
                 player.sendMessage(Color.color("&c&l此物品不在白名单内 无法镶嵌宝石"));
                 return;
@@ -36,11 +36,11 @@ public class WorkbenchListener implements Listener {
             String id = FlyBuffAPI.getGemBuff(gem);
             if (id == null) return;
             ItemStack item = event.getCurrentItem();
-            if (FlyBuffAPI.getAllInstalledBuff(item).contains(id)){
+            if (FlyBuffAPI.getAllInstalledBuff(item).contains(id)) {
                 player.sendMessage(Color.color("&c&l此物品已镶嵌相同的宝石"));
                 return;
             }
-            for (String line : FlyBuff.instance.getConfig().getStringList("buffs." + id + ".install")) {
+            for (String line : FlyBuff.instance.getConfiguration().getStringList("buffs." + id + ".install")) {
                 for (String module : ModuleLoader.buffInstallHandlers.keySet()) {
                     if (line.startsWith("[" + module + "] ")) {
                         String param = line.substring(("[" + module + "] ").length());
@@ -60,7 +60,7 @@ public class WorkbenchListener implements Listener {
             }
             item = FlyBuffAPI.addBuff(item, id);
             gem.setAmount(gem.getAmount() - 1);
-            for (String line : FlyBuff.instance.getConfig().getStringList("buffs." + id + ".install")) {
+            for (String line : FlyBuff.instance.getConfiguration().getStringList("buffs." + id + ".install")) {
                 for (String module : ModuleLoader.buffInstallHandlers.keySet()) {
                     if (line.startsWith("[" + module + "] ")) {
                         String param = line.substring(("[" + module + "] ").length());

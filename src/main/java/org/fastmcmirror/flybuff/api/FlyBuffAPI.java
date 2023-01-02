@@ -1,6 +1,5 @@
 package org.fastmcmirror.flybuff.api;
 
-import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.inventory.ItemStack;
@@ -42,7 +41,7 @@ public class FlyBuffAPI {
     }
 
     public static ItemStack getGem(String buff) {
-        NBTContainer container = new NBTContainer(FlyBuff.instance.getConfig().getString("buffs." + buff + ".gem"));
+        NBTContainer container = new NBTContainer(FlyBuff.instance.getConfiguration().getString("buffs." + buff + ".gem"));
         NBTItem item = new NBTItem(NBTItem.convertNBTtoItem(container));
         item.setString("FlyBuffGem", buff);
         return item.getItem();

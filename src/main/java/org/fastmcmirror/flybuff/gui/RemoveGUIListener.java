@@ -39,7 +39,7 @@ public class RemoveGUIListener implements Listener {
             return;
         }
         String id = FlyBuffAPI.getGemBuff(event.getCurrentItem());
-        for (String line : FlyBuff.instance.getConfig().getStringList("buffs." + id + ".remove")) {
+        for (String line : FlyBuff.instance.getConfiguration().getStringList("buffs." + id + ".remove")) {
             for (String module : ModuleLoader.buffRemoveHandlers.keySet()) {
                 if (line.startsWith("[" + module + "] ")) {
                     String param = line.substring(("[" + module + "] ").length());
@@ -59,7 +59,7 @@ public class RemoveGUIListener implements Listener {
         }
         ItemStack item = FlyBuffAPI.removeBuff(player.getInventory().getItemInMainHand(), id);
         ItemStack gem = FlyBuffAPI.getGem(id);
-        for (String line : FlyBuff.instance.getConfig().getStringList("buffs." + id + ".remove")) {
+        for (String line : FlyBuff.instance.getConfiguration().getStringList("buffs." + id + ".remove")) {
             for (String module : ModuleLoader.buffRemoveHandlers.keySet()) {
                 if (line.startsWith("[" + module + "] ")) {
                     String param = line.substring(("[" + module + "] ").length());

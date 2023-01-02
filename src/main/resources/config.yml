@@ -17,3 +17,13 @@ workspace: WORKBENCH
 whitelist:
   - "DIAMOND_SWORD"
   - "DIAMOND_AXE"
+eventPackages:
+  - "org.bukkit"
+  - "com.destroystokyo.paper"
+  - "io.papermc.paper"
+  - "net.pl3x"
+  - "com.tuinity"
+  - "org.spigotmc"
+  - "org.purpurmc"
+  - "gg.airplane"
+  - "gg.pufferfish"

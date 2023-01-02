@@ -25,7 +25,7 @@ public class RemoveGUI implements InventoryHolder {
     public RemoveGUI(Player player) {
         inventory = Bukkit.createInventory(this, 6 * 9, Color.color("&7&l宝石拆卸台"));
         buffs = FlyBuffAPI.getAllInstalledBuff(player.getItemInHand()).stream().filter(
-                it -> FlyBuff.instance.getConfig().getBoolean("buffs." + it + ".enable-remove")
+                it -> FlyBuff.instance.getConfiguration().getBoolean("buffs." + it + ".enable-remove")
         ).collect(Collectors.toList());
         initUI();
         reloadItems();

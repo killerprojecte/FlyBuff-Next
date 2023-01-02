@@ -14,16 +14,55 @@ import org.fastmcmirror.flybuff.module.ModuleLoader;
 
 public class BuffTickTask extends BukkitRunnable {
     private static void handleBuffs(Player player, ItemStack item, ItemSlot slot) {
-        if (item == null || item.getType().equals(Material.AIR) || item.getAmount()<1) return;
+        if (item == null || item.getType().equals(Material.AIR) || item.getAmount() < 1) return;
+        boolean modify = false;
         for (String buff : FlyBuffAPI.getAllInstalledBuff(item)) {
-            for (String line : FlyBuff.instance.getConfig().getStringList("buffs." + buff + ".tick")) {
+            modify = true;
+            for (String line : FlyBuff.instance.getConfiguration().getStringList("buffs." + buff + ".tick")) {
                 for (String module : ModuleLoader.buffTickHandlers.keySet()) {
                     if (line.startsWith("[" + module + "] ")) {
                         String param = line.substring(("[" + module + "] ").length());
                         BuffTickHandler handler = ModuleLoader.buffTickHandlers.get(module);
-                        handler.handle(player, item, buff, slot, param);
+                        item = handler.handle(player, item, buff, slot, param);
                     }
                 }
+            }
+        }
+        if (modify) {
+            modifySlot(player, slot, item);
+        }
+    }
+
+    private static void modifySlot(Player player, ItemSlot slot, ItemStack item) {
+        PlayerInventory inventory = player.getInventory();
+        switch (slot) {
+            case HELMET: {
+                inventory.setHelmet(item);
+                break;
+            }
+            case CHESTPLATE: {
+                inventory.setChestplate(item);
+                break;
+            }
+            case LEGGINGS: {
+                inventory.setLeggings(item);
+                break;
+            }
+            case BOOTS: {
+                inventory.setBoots(item);
+                break;
+            }
+            case MAIN_HAND: {
+                inventory.setItemInMainHand(item);
+                break;
+            }
+            case OFF_HAND: {
+                inventory.setItemInOffHand(item);
+                break;
+            }
+            default: {
+                FlyBuff.instance.getLogger().warning("未知槽位: " + slot.toString() + " 触发玩家: " + player.getName());
+                break;
             }
         }
     }

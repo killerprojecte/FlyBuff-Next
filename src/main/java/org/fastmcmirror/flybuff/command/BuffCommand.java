@@ -13,12 +13,15 @@ import org.fastmcmirror.flybuff.utils.Color;
 
 public class BuffCommand implements CommandExecutor {
     private static void sendHelp(CommandSender sender) {
+        sender.sendMessage(Color.color("&b&lFlyBuff&8-&a&lNext &ev" + FlyBuff.instance.getDescription().getVersion() + " - &7命令帮助"));
+        sender.sendMessage(Color.color("&8&m                                   "));
         if (sender.isOp()) {
-            sender.sendMessage(Color.color("&e/flybuff reload"));
-            sender.sendMessage(Color.color("&e/flybuff get <Buff>"));
-            sender.sendMessage(Color.color("&e/flybuff set <Buff>"));
+            sender.sendMessage(Color.color("&7/flybuff reload &e————— 重载插件"));
+            sender.sendMessage(Color.color("&7/flybuff get <Buff> &e————— 获取配置中的宝石"));
+            sender.sendMessage(Color.color("&7/flybuff set <Buff> &e————— 将宝石设置到配置中"));
         }
-        sender.sendMessage(Color.color("&e/flybuff removeui"));
+        sender.sendMessage(Color.color("&7/flybuff removeui &e————— 打开宝石移除界面"));
+        sender.sendMessage(Color.color("&8&m                                   "));
     }
 
     @Override
@@ -57,7 +60,7 @@ public class BuffCommand implements CommandExecutor {
                 }
                 if (!(sender instanceof Player)) return false;
                 Player player = (Player) sender;
-                FlyBuff.instance.getConfig().set("buffs." + args[1] + ".gem", NBTItem.convertItemtoNBT(player.getInventory().getItemInMainHand()).toString());
+                FlyBuff.instance.getConfiguration().set("buffs." + args[1] + ".gem", NBTItem.convertItemtoNBT(player.getInventory().getItemInMainHand()).toString());
                 FlyBuff.instance.saveConfig();
             } else {
                 sendHelp(sender);

@@ -1,5 +1,6 @@
 package org.fastmcmirror.flybuff.module;
 
+import org.bukkit.Bukkit;
 import org.fastmcmirror.flybuff.FlyBuff;
 import org.fastmcmirror.flybuff.api.BuffInstallHandler;
 import org.fastmcmirror.flybuff.api.BuffListenerHandler;
@@ -57,6 +58,7 @@ public class ModuleLoader {
         buffRemoveHandlers = new HashMap<>();
         buffTickHandlers = new HashMap<>();
         buffListenerHandlers = new HashMap<>();
+        main:
         for (String name : className) {
             Class<?> clz = null;
             try {
@@ -77,7 +79,13 @@ public class ModuleLoader {
                 } catch (InstantiationException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
-                FlyBuff.instance.getLogger().info("[模块] 正在注册宝石安装模块: " + instance.getIdentifier());
+                for (String depend : instance.getDependencies()) {
+                    if (Bukkit.getPluginManager().getPlugin(depend) == null) {
+                        FlyBuff.instance.getLogger().severe("[FlyBuff模块] 无法加载宝石安装模块: " + instance.getName() + " 作者: " + instance.getAuthor() + " 版本: " + instance.getVersion() + " 原因: 缺失模块依赖 " + depend);
+                        continue main;
+                    }
+                }
+                FlyBuff.instance.getLogger().info("[FlyBuff模块] 正在注册宝石安装模块: " + instance.getName() + " 作者: " + instance.getAuthor() + " 标识符: " + instance.getIdentifier() + " 版本: " + instance.getVersion());
                 buffInstallHandlers.put(instance.getIdentifier(), instance);
             } else if (BuffRemoveHandler.class.isAssignableFrom(clz)) {
                 BuffRemoveHandler instance = null;
@@ -86,7 +94,13 @@ public class ModuleLoader {
                 } catch (InstantiationException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
-                FlyBuff.instance.getLogger().info("[模块] 正在注册宝石移除模块: " + instance.getIdentifier());
+                for (String depend : instance.getDependencies()) {
+                    if (Bukkit.getPluginManager().getPlugin(depend) == null) {
+                        FlyBuff.instance.getLogger().severe("[FlyBuff模块] 无法加载宝石移除模块: " + instance.getName() + " 作者: " + instance.getAuthor() + " 版本: " + instance.getVersion() + " 原因: 缺失模块依赖 " + depend);
+                        continue main;
+                    }
+                }
+                FlyBuff.instance.getLogger().info("[FlyBuff模块] 正在注册宝石移除模块: " + instance.getName() + " 作者: " + instance.getAuthor() + " 标识符: " + instance.getIdentifier() + " 版本: " + instance.getVersion());
                 buffRemoveHandlers.put(instance.getIdentifier(), instance);
             } else if (BuffTickHandler.class.isAssignableFrom(clz)) {
                 BuffTickHandler instance = null;
@@ -95,7 +109,13 @@ public class ModuleLoader {
                 } catch (InstantiationException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
-                FlyBuff.instance.getLogger().info("[模块] 正在注册宝石定时模块: " + instance.getIdentifier());
+                for (String depend : instance.getDependencies()) {
+                    if (Bukkit.getPluginManager().getPlugin(depend) == null) {
+                        FlyBuff.instance.getLogger().severe("[FlyBuff模块] 无法加载宝石定时模块: " + instance.getName() + " 作者: " + instance.getAuthor() + " 版本: " + instance.getVersion() + " 原因: 缺失模块依赖 " + depend);
+                        continue main;
+                    }
+                }
+                FlyBuff.instance.getLogger().info("[FlyBuff模块] 正在注册宝石定时模块: " + instance.getName() + " 作者: " + instance.getAuthor() + " 标识符: " + instance.getIdentifier() + " 版本: " + instance.getVersion());
                 buffTickHandlers.put(instance.getIdentifier(), instance);
             } else if (BuffListenerHandler.class.isAssignableFrom(clz)) {
                 BuffListenerHandler instance = null;
@@ -104,7 +124,13 @@ public class ModuleLoader {
                 } catch (InstantiationException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
-                FlyBuff.instance.getLogger().info("[模块] 正在注册宝石监听模块: " + instance.getIdentifier());
+                for (String depend : instance.getDependencies()) {
+                    if (Bukkit.getPluginManager().getPlugin(depend) == null) {
+                        FlyBuff.instance.getLogger().severe("[FlyBuff模块] 无法加载监听模块: " + instance.getName() + " 作者: " + instance.getAuthor() + " 版本: " + instance.getVersion() + " 原因: 缺失模块依赖 " + depend);
+                        continue main;
+                    }
+                }
+                FlyBuff.instance.getLogger().info("[FlyBuff模块] 正在注册宝石监听模块: " + instance.getName() + " 作者: " + instance.getAuthor() + " 标识符: " + instance.getIdentifier() + " 版本: " + instance.getVersion());
                 buffListenerHandlers.put(instance.getIdentifier(), instance);
             }
         }

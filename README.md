@@ -1,4 +1,5 @@
 # **FlyBuff-Next**
+![COMMIT](https://shields.io/endpoint?url=https://flybuff-github.rgbmc.org)
 - 下一代宝石镶嵌系统
 - FlyBuff 1.x的继任
 - 功能模块化
@@ -35,9 +36,69 @@ FlyBuff 2.x 全面重写了 FlyBuff 1.x的所有框架
 在jar被FlyBuff加载时将自动注册
 
 ## 额外协议
+
 - 本内容根据GPLv3第7条发布
+
 ```
 1. 禁止任何人以任何方式对FlyBuff-Next其可执行内容或源码进行付费分发
 2. 任何人对FlyBuff-Next源码进行分发时必须附上此仓库链接
 3. FlyBuff-Next开发者有权力对违规使用(诈骗行为, 违法行为等)FlyBuff的用户撤销使用授权
+```
+
+## 添加至依赖
+
+- Maven
+
+```xml
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>example</artifactId>
+    <repositories>
+        <repository>
+            <id>fastmcmirror-repo</id>
+            <url>https://repo.fastmcmirror.org/content/repositories/releases/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.fastmcmirror</groupId>
+            <artifactId>flybuff-next</artifactId>
+            <version>2.0.0-SNAPSHOT-{COMMIT_ID}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>
+```
+
+- Gradle Groovy
+
+```groovy
+repositories {
+    maven {
+        name = 'fastmcmirror-repo'
+        url = "https://repo.fastmcmirror.org/content/repositories/releases/"
+    }
+}
+
+dependencies {
+    compileOnly 'org.fastmcmirror:flybuff-next:2.0.0-SNAPSHOT-{COMMIT_ID}'
+}
+```
+
+- Gradle Kotlin
+
+```kotlin
+repositories {
+    maven {
+        name = "fastmcmirror-repo"
+        url = uri("https://repo.fastmcmirror.org/content/repositories/releases/")
+    }
+}
+
+dependencies {
+    compileOnly("org.fastmcmirror:flybuff-next:2.0.0-SNAPSHOT-{COMMIT_ID}")
+}
 ```

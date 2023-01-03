@@ -5,6 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
@@ -47,10 +48,16 @@ public class GeneralListener implements Listener {
                     if (entityDamageByEntityEvent.getDamager() instanceof LivingEntity) {
                         LivingEntity damager = (LivingEntity) entityDamageByEntityEvent.getDamager();
                         item = damager.getEquipment().getItemInMainHand();
+                        entity = damager;
                     }
+                } else if (entityEvent instanceof EntityDeathEvent) {
+                    EntityDeathEvent deathEvent = (EntityDeathEvent) entityEvent;
+                    item = deathEvent.getEntity().getKiller().getInventory().getItemInMainHand();
+                    entity = deathEvent.getEntity().getKiller();
                 }
                 if (item == null || item.getType().equals(Material.AIR) || item.getAmount() < 1) return;
-                handle(item, event, itemStack -> entity.getEquipment().setItemInMainHand(itemStack));
+                LivingEntity finalEntity = entity;
+                handle(item, event, itemStack -> finalEntity.getEquipment().setItemInMainHand(itemStack));
             }
         } else if (event instanceof PlayerEvent) {
             PlayerEvent playerEvent = (PlayerEvent) event;
